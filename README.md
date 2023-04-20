@@ -31,6 +31,9 @@ pip install -r requirements.txt
 python main.py
 ```
 
+Los archivos y el progreso de la descarga se guardan por defecto en el directorio `snapshot-YYYY-MM-DD` con fecha actual
+
+
 mas [información sobre el Diseño](Diseño.md)
 
 ## Contribuye
