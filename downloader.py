@@ -1,6 +1,7 @@
 from datetime import date, datetime, timedelta
+import json
 from utils import month_to_date, month_to_str
-from time import sleep
+from bdns import BDNS
 import calendar
 import requests
 import random
@@ -17,19 +18,22 @@ class Downloader:
         self.month = month
 
         self.days_in_month = self.get_dates_in_month(self.month)
-        self.folder = os.path.join(output_folder, str(month.year))
-        if not os.path.exists(self.folder):
-            os.makedirs(self.folder)
+        self.output_folder = output_folder
+        self.folder_year = os.path.join(output_folder, str(month.year))
+        if not os.path.exists(self.folder_year):
+            os.makedirs(self.folder_year)
 
     def start(self):
-        print("Starting downloader")
         print("Agent ID: " + self.agent_id)
-        print("Month: " + month_to_str(self.month))
+        print("New Month: " + month_to_str(self.month))
         candidates = self.get_candidates_list(self.days_in_month)
         while candidates:
             candidate = random.choice(candidates)
-            time.sleep(random.randint(1, 3))
-            self.save_response(candidate, 'test')
+            
+            d = BDNS(candidate,self.output_folder)
+            day_data = d.download()
+
+            self.save_response(candidate, day_data)
             candidates = self.get_candidates_list(self.days_in_month)
 
     def stop(self):
@@ -51,22 +55,23 @@ class Downloader:
 
     def get_output_file_path(self, date_obj: date) -> str:
         filename = date_obj.strftime('%m-%d.json')
-        return os.path.join(self.folder, filename)
+        return os.path.join(self.folder_year, filename)
 
     def save_response(self, date, content):
         self.get_output_file_path(date)
         output_file = self.get_output_file_path(date)
-        print(output_file)
+        # print(output_file)
         with open(output_file, 'w') as f:
-            f.write(content)
+            json.dump(content, f)
 
 
-def get_csrf(session: requests.Session):
-    url = 'https://www.pap.hacienda.gob.es/bdnstrans/GE/es/concesiones'
-    response = session.get(url, verify=False)
-    csrf_regex = r'<input.*?name="_csrf".*?value="(.*?)".*?>'
-    csrf_value = re.findall(csrf_regex, response.text)[0]
-    return csrf_value
+
+# def get_csrf(session: requests.Session):
+#     url = 'https://www.pap.hacienda.gob.es/bdnstrans/GE/es/concesiones'
+#     response = session.get(url, verify=False)
+#     csrf_regex = r'<input.*?name="_csrf".*?value="(.*?)".*?>'
+#     csrf_value = re.findall(csrf_regex, response.text)[0]
+#     return csrf_value
 
 
 def make_post_request(session, day_date, _csrf):

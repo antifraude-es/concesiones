@@ -81,8 +81,10 @@ def main():
     if not os.path.exists(config['output_folder']):
         os.makedirs(config['output_folder'])
 
+    global OUTPUT_FOLDER
     global HISTORIC_FILE
-
+    
+    OUTPUT_FOLDER = config['output_folder']
     HISTORIC_FILE = f'{config["output_folder"]}/historic.log'
     instance_id = generate_id()
 
