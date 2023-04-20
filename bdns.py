@@ -94,7 +94,7 @@ class BDNS:
             '_actividadesNACE': '1',
             '_instrumentos': '1',
             '_csrf': self.csrf
-        })
+        },verify=False)
         # print(response.content)
         
 
@@ -134,7 +134,7 @@ class BDNS:
             'sidx': 8,
             'sord': 'asc'
         }
-        return self.session.get(url_datos, headers=headers_page, params=params).json()
+        return self.session.get(url_datos, headers=headers_page, params=params, verify=False).json()
 
 
 
