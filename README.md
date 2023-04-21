@@ -15,9 +15,14 @@ Este proyecto está diseñado para facilitar el acceso a los datos públicos de 
 ## Intrucciones
 Para empezar, clona este repositorio y sigue las instrucciones a continuación:
 
+0. Clona este repositorio:
+```
+git clone https://github.com/antifraude-es/concesiones.git
+cd concesiones
+```
 1. Configura un entorno virtual (opcional pero recomendado):
 ```
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # En Windows: venv\Scripts\activate
 ```
 2. Instala las dependencias necesarias:
@@ -28,7 +33,7 @@ pip install -r requirements.txt
 
 4. Ejecuta el script principal para iniciar el proceso de descarga:
 ```
-python main.py
+python3 main.py
 ```
 
 Los archivos y el progreso de la descarga se guardan por defecto en el directorio `snapshot-YYYY-MM-DD` con fecha actual
